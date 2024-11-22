@@ -1,26 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private float powerMass;
+    [SerializeField] private float attackForce;
+    
     [SerializeField] private GameObject stabilizer;
 
-    PlayerInputActions playerInputActions;
     Rigidbody rb;
     
-
     private Vector2 move;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerInputActions = new PlayerInputActions();
         rb = GetComponent<Rigidbody>();
-
-        playerInputActions.Enable();
     }
 
     // Update is called once per frame
@@ -31,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     private void GetMoveInput()
     {
-        move = playerInputActions.Player.Move.ReadValue<Vector2>();
+        move = GameManager.Instance.playerInputActions.Player.Move.ReadValue<Vector2>();
         
         if(move.x < 0 )
         {
@@ -55,5 +56,20 @@ public class PlayerController : MonoBehaviour
         }
 
         
+    }
+
+    private void Attack(InputAction.CallbackContext context)
+    {
+        Debug.Log("powerMass apertada");
+        rb.mass = powerMass;
+    }
+    private void OnEnable()
+    {
+        GameManager.Instance.playerInputActions.Player.Attack.performed += Attack;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.playerInputActions.Player.Attack.performed -= Attack;
     }
 }
