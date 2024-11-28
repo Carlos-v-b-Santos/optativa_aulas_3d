@@ -8,8 +8,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerInputActions playerInputActions;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (Instance != null)
         {
@@ -25,11 +24,5 @@ public class GameManager : MonoBehaviour
         }
 
         playerInputActions.Enable();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

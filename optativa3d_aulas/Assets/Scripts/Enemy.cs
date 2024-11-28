@@ -7,11 +7,14 @@ using UnityEngine.Scripting.APIUpdating;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] Transform player;
-    [SerializeField] float speed;
-    [SerializeField] float attackForce;
+    [SerializeField] private float speed;
+    [SerializeField] private float attackForce;
+
+    [SerializeField] private float moveDelayCurrent;
+    [SerializeField] private float moveDelay;
 
     private Rigidbody rb;
-    private Vector3 direction;
+    public Vector3 direction;
 
     // Start is called before the first frame update
     void Start()
@@ -27,9 +30,17 @@ public class Enemy : MonoBehaviour
 
     private void Move()
     {
-        direction = (player.position - this.transform.position).normalized;
+        if (moveDelayCurrent >= moveDelay)
+        {
+            direction = (player.position - this.transform.position).normalized;
+            moveDelayCurrent = 0.0f;
+        }
+        else
+        {
+            moveDelayCurrent += Time.deltaTime;
+        }
 
-        rb.AddForce(direction * speed * Time.deltaTime);
+        rb.AddForce(direction * speed * Time.deltaTime, ForceMode.Acceleration);
     }
 
     private void OnCollisionEnter(Collision collision)

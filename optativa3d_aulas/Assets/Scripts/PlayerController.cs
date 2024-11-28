@@ -9,19 +9,30 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
+
+    [SerializeField] private float normalMass;
     [SerializeField] private float powerMass;
-    [SerializeField] private float attackForce;
     
     [SerializeField] private GameObject stabilizer;
+    
+    [SerializeField] private float attackForce;
+    [SerializeField] private bool canAttack;
+    [SerializeField] private bool attackMode;
+    [SerializeField] private float attackCooldown;
+    [SerializeField] private float attackDuration;
 
     Rigidbody rb;
     
     private Vector2 move;
+    private InputAction attack;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        attack = GameManager.Instance.playerInputActions.FindAction("Attack");
+        normalMass = rb.mass;
+        canAttack = true;
     }
 
     // Update is called once per frame
@@ -36,40 +47,63 @@ public class PlayerController : MonoBehaviour
         
         if(move.x < 0 )
         {
-            rb.AddForce(stabilizer.transform.right * speed);
+            rb.AddForce(stabilizer.transform.right * speed,ForceMode.Acceleration);
 
         }
         else if (move.x > 0)
         {
-            rb.AddForce(-stabilizer.transform.right * speed);
+            rb.AddForce(-stabilizer.transform.right * speed, ForceMode.Acceleration);
         }
 
         if (move.y < 0 ) 
         {
             
-            rb.AddForce(stabilizer.transform.forward * speed);
+            rb.AddForce(stabilizer.transform.forward * speed, ForceMode.Acceleration);
         }
         else if(move.y > 0) 
         {
             
-            rb.AddForce(-stabilizer.transform.forward * speed);
+            rb.AddForce(-stabilizer.transform.forward * speed, ForceMode.Acceleration);
         }
 
-        
+        if(attack.IsPressed() )
+        {
+            if(canAttack)
+            {
+                StartCoroutine(AttackMode());
+            }
+        }
     }
 
-    private void Attack(InputAction.CallbackContext context)
+    IEnumerator AttackMode()
     {
-        Debug.Log("powerMass apertada");
+        Debug.Log("AttackMode Active");
+        attackMode = true;
         rb.mass = powerMass;
-    }
-    private void OnEnable()
-    {
-        GameManager.Instance.playerInputActions.Player.Attack.performed += Attack;
+        canAttack = false;
+
+        yield return new WaitForSeconds(attackDuration);
+
+        Debug.Log("AttackMode Desactive");
+        attackMode = false;
+        rb.mass = normalMass;
+
+        yield return new WaitForSeconds(attackCooldown);
+
+        Debug.Log("canAttack");
+        canAttack = true;
     }
 
-    private void OnDisable()
+    private void OnCollisionEnter(Collision collision)
     {
-        GameManager.Instance.playerInputActions.Player.Attack.performed -= Attack;
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            if (attackMode)
+            {
+                Vector3 direction = collision.gameObject.GetComponent<Enemy>().direction;
+
+                collision.rigidbody.AddForce((-direction) * attackForce, ForceMode.Impulse);
+            }
+        }
     }
 }
