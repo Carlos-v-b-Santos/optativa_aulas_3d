@@ -13,23 +13,45 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float moveDelayCurrent;
     [SerializeField] private float moveDelay;
 
+    [SerializeField] private float killHeight;
+
+    [SerializeField] private bool isGround;
+
     private Rigidbody rb;
     public Vector3 direction;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        player = GameObject.FindWithTag("Player").transform;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         Move();
+        VerifyKill();
+    }
+
+    private void VerifyKill()
+    {
+        if(transform.position.y < killHeight)
+        {
+            Kill();
+        }
+    }
+
+    private void Kill()
+    {
+        ScoreManager.Instance.IncreaseScore();
+        Destroy(this.gameObject);
     }
 
     private void Move()
     {
+        if (!isGround) return;
+
         if (moveDelayCurrent >= moveDelay)
         {
             direction = (player.position - this.transform.position).normalized;
@@ -48,6 +70,19 @@ public class Enemy : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             collision.rigidbody.AddForce(direction * attackForce,ForceMode.Impulse);
+        }
+
+        if(collision.gameObject.CompareTag("Cumbuca"))
+        {
+            isGround = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Cumbuca"))
+        {
+            isGround = false;
         }
     }
 }
