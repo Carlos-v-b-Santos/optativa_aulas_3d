@@ -6,7 +6,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
 
-    [SerializeField] private int score;
+    [SerializeField] public int score { private set; get; }
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,11 +21,5 @@ public class ScoreManager : MonoBehaviour
     public void IncreaseScore()
     {
         score += 1;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
