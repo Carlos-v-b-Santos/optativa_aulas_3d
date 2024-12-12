@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -14,6 +12,8 @@ public class PlayerControl : MonoBehaviour
 
     [SerializeField] private Vector3 move;
 
+    [SerializeField] private AudioSource audioSourceMove;
+
     private Rigidbody rb;
 
     // Start is called before the first frame update
@@ -21,6 +21,8 @@ public class PlayerControl : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rotacaoInicial = transform.rotation;
+        audioSourceMove.Play();
+        audioSourceMove.Pause();
     }
 
     // Update is called once per frame
@@ -37,34 +39,20 @@ public class PlayerControl : MonoBehaviour
 
         if(move == Vector3.zero)
         {
+            audioSourceMove.Pause();
             rb.MoveRotation(Quaternion.Lerp(rb.rotation, rotacaoInicial, Time.deltaTime * recoverVelocity));
         }
 
         if (move != Vector3.zero)
         {
+            
+            if(!audioSourceMove.isPlaying) audioSourceMove.UnPause();
+
             Debug.Log("inclinar eixo X");
             //transform.Rotate(move.x * rotateVelocity * Time.deltaTime * Vector3.up);
 
             Quaternion deltaRotation = Quaternion.Euler(move * rotateVelocity * Time.fixedDeltaTime);
             rb.MoveRotation(rb.rotation * deltaRotation);
         }
-
-        //if (move.y != 0f)
-        //{
-        //    Debug.Log("inclinar eixo Y");
-            //transform.Rotate(move.y * rotateVelocity * Time.deltaTime * Vector3.right);
-
-        //    Quaternion deltaRotation = Quaternion.Euler(move.y * rotateVelocity * Time.fixedDeltaTime * Vector3.right);
-        //    rb.MoveRotation(rb.rotation * deltaRotation);
-        //}
-
-        //if(move.z != 0f)
-        //{
-        //    Debug.Log("girar eixo Z");
-            //transform.Rotate(move.z * rotateVelocity * Time.deltaTime * Vector3.forward);
-
-        //    Quaternion deltaRotation = Quaternion.Euler(move.z * rotateVelocity * Time.fixedDeltaTime * Vector3.forward);
-        //    rb.MoveRotation(rb.rotation * deltaRotation);
-        //}
     }
 }

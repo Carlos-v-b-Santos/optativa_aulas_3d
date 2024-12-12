@@ -22,6 +22,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Vector3 initialScale;
     [SerializeField] private Vector3 finalScale;
 
+    [SerializeField] private AudioSource audioSourceEffect;
+    [SerializeField] private AudioClip effectClip;
+
+    [SerializeField] private GameObject impactEffect;
+
     private Rigidbody rb;
     public Vector3 direction;
 
@@ -30,6 +35,7 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player").transform;
+        audioSourceEffect = GameObject.FindWithTag("AudioEffect").GetComponent<AudioSource>();
         initialScale = player.localScale;
         isDeath = false;
     }
@@ -75,9 +81,12 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        Instantiate(impactEffect, this.transform);
+        audioSourceEffect.PlayOneShot(effectClip);
+
+        if (collision.gameObject.CompareTag("Player"))
         {
-            collision.rigidbody.AddForce(direction * attackForce,ForceMode.Impulse);
+            collision.rigidbody.AddForce(direction * attackForce,ForceMode.Impulse);   
         }
 
         if(collision.gameObject.CompareTag("Cumbuca"))

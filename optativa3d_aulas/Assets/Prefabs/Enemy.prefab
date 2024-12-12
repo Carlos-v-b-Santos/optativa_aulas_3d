@@ -105,9 +105,13 @@ MonoBehaviour:
   moveDelay: 0.5
   killHeight: -5
   isGround: 0
+  isDeath: 0
   duration: 1
   initialScale: {x: 0, y: 0, z: 0}
   finalScale: {x: 0, y: 0, z: 0}
+  audioSourceEffect: {fileID: 0}
+  effectClip: {fileID: 8300000, guid: 00895011ab86db84e9c2c69adcdf25ef, type: 3}
+  impactEffect: {fileID: 100002, guid: 00fedc70b62a31e448e8ccc298257b56, type: 3}
   direction: {x: 0, y: 0, z: 0}
 --- !u!135 &1727489686999685135
 SphereCollider:

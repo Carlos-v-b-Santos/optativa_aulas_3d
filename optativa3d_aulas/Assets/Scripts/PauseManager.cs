@@ -10,6 +10,12 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private Sprite btnPauseSprite;
     [SerializeField] private Sprite btnResumeSprite;
     private bool isPaused;
+
+    private void Start()
+    {
+        PauseButton();
+    }
+
     public void PauseButton()
     {
         if (isPaused)
