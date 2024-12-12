@@ -103,8 +103,11 @@ MonoBehaviour:
   attackForce: 500
   moveDelayCurrent: 0
   moveDelay: 0.5
-  killHeight: -20
+  killHeight: -5
   isGround: 0
+  duration: 1
+  initialScale: {x: 0, y: 0, z: 0}
+  finalScale: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
 --- !u!135 &1727489686999685135
 SphereCollider:

@@ -16,6 +16,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float killHeight;
 
     [SerializeField] private bool isGround;
+    [SerializeField] private bool isDeath;
+
+    [SerializeField] private float duration;
+    [SerializeField] private Vector3 initialScale;
+    [SerializeField] private Vector3 finalScale;
 
     private Rigidbody rb;
     public Vector3 direction;
@@ -25,6 +30,8 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player").transform;
+        initialScale = player.localScale;
+        isDeath = false;
     }
 
     // Update is called once per frame
@@ -44,8 +51,9 @@ public class Enemy : MonoBehaviour
 
     private void Kill()
     {
+        //bug na pontuação? não é bug, é feature
         ScoreManager.Instance.IncreaseScore();
-        Destroy(this.gameObject);
+        StartCoroutine(KillScaleAnim());
     }
 
     private void Move()
@@ -84,5 +92,26 @@ public class Enemy : MonoBehaviour
         {
             isGround = false;
         }
+    }
+
+    private IEnumerator KillScaleAnim()
+    {
+        float tempoAtual = 0f;
+
+        while (tempoAtual < duration)
+        {
+            // Incrementa o tempo decorrido
+            tempoAtual += Time.deltaTime;
+
+            // Interpola entre a escala inicial e a final
+            transform.localScale = Vector3.Lerp(initialScale, finalScale, tempoAtual / duration);
+
+            yield return null; // Espera até o próximo frame
+        }
+
+        // Garante que a escala final seja exata no final
+        transform.localScale = finalScale;
+        
+        Destroy(this.gameObject);
     }
 }
