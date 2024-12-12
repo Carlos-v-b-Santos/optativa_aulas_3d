@@ -9,6 +9,6 @@ public class ClockUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        clockText.text = string.Format("{0:00}:{1:00}", TimeManager.Instance.minutes, TimeManager.Instance.seconds);
+        clockText.text = string.Format("TEMPO:\n{0:00}:{1:00}", TimeManager.Instance.minutes, TimeManager.Instance.seconds);
     }
 }

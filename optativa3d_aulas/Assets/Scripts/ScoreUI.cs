@@ -8,6 +8,6 @@ public class ScoreUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     void Update()
     {
-        scoreText.text = new string("Pontuação:\n" + ScoreManager.Instance.score);
+        scoreText.text = new string("PONTOS:\n" + ScoreManager.Instance.score);
     }
 }

@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 664b65ad2106ac740a00ab1ce1974646, type: 2}
+  - {fileID: 2100000, guid: 3c7ac44763a1f964093c38f4217a240d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speed: 1000
-  attackForce: 10
+  attackForce: 500
   moveDelayCurrent: 0
   moveDelay: 0.5
   killHeight: -20
