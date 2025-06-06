@@ -18,10 +18,19 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "dd05f56d-4920-4318-880f-20ead20c8091",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MoveMobile",
+                    "type": "PassThrough",
+                    "id": "8c708dc4-5679-497f-a309-5dee4cb23dbd",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -187,6 +196,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2aa2d026-a6a4-47c8-9b11-e8a34f172f84",
+                    "path": "<Accelerometer>/acceleration",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveMobile",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

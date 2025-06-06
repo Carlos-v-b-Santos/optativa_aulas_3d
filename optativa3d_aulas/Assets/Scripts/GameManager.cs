@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
     }
     public void ResumeGame()
     {
-        transitionEffect.FadeOut();
+        //transitionEffect.FadeOut();
         Time.timeScale = 1;
 
     }
